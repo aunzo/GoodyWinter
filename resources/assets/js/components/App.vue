@@ -1,10 +1,8 @@
 <template>
     <div class="container">
-        <div>
-            <transition name="fade">
-                <router-view :key='$route.fullPath'></router-view>
-            </transition>
-        </div>
+        <transition name="fade">
+            <router-view :key='$route.fullPath'></router-view>
+        </transition>
     </div>
 </template>
 

@@ -8,9 +8,24 @@ Vue.use(VueRouter);
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        { path: '/main', component: Main, name:'main' },
-        { path: '/login', component: Login, name:'login' }
+        { path: '/main', name:'main', component: Main, meta: { requiresAuth: true}  },
+        { path: '/', name:'login', component: Main, meta: { requiresAuth: true}  },
+        { path: '/login', name:'login', component: Login  } 
     ]
 });
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      if (!Laravel.isLogin) {
+        next({
+          path: '/login',
+        });
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+  })
 
 export default router;

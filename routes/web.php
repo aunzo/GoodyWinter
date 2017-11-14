@@ -12,9 +12,7 @@
 */
 
 Route::any('{all}', function () {
-    return view('welcome');
+    return view('app');
 })->where(['all' => '.*']);
 
 Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');
