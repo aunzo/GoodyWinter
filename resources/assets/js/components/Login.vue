@@ -5,13 +5,16 @@
                 <img :src="'/images/goodyWinterLogo.png'"/>
             </div>
             <form @submit.prevent="login" @keydown="form.onKeydown($event)">
+                
                 <div class="form-group has-feedback">
-                    <input type="username" class="form-control" placeholder="ชื่อผู้ใช้">
+                    <input v-model="form.username" type="username" class="form-control" :class="{ 'is-invalid': form.errors.has('username') }" placeholder="ชื่อผู้ใช้">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    <has-error style="color:#ff0000" :form="form" field="username"></has-error>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="password" class="form-control" placeholder="รหัสผ่าน">
+                    <input v-model="form.password" type="password" class="form-control" :class="{ 'is-invalid': form.errors.has('password') }" placeholder="รหัสผ่าน">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    <has-error style="color:#ff0000" :form="form" field="password"></has-error>
                 </div>
                 <div class="row">
                     <div class="col-xs-8">
@@ -31,49 +34,49 @@
 </template>
 
 <script>
-import Form from 'vform'
+import Vue from 'vue'
+import { Form, HasError, AlertError } from 'vform'
 
-export default {
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
 
+export default 
+{
   data: () => ({
     form: new Form({
-      username: '',
+      email: '',
       password: ''
     }),
-    remember: false
+    remember: false 
   }),
-  methods: {
-    login () {
-        console.log(this.form);
-        this.axios.post('/login', this.item).then((response) => {
-          console.log('response: ',response.data);
-        }).catch(function(thrown) {
-            console.log('Request canceled', thrown.message);
+  methods: 
+  {
+    login () 
+    {
+        this.form.post('/login').then(({ data }) => 
+        { 
+            console.log(data)
+            Laravel.isLogin = true
+            this.$router.push({ name: 'main' })
+        })
+        .catch((error) => {
+            console.log(error.message);
         });
-        // axios.post('/login',form.data)
-    //   // Submit the form.
-    //   const { data } = await this.form.post('/api/login')
-
-    //   // Save the token.
-    //   this.$store.dispatch('saveToken', {
-    //     token: data.token,
-    //     remember: this.remember
-    //   })
-
-    //   // Fetch the user.
-    //   await this.$store.dispatch('fetchUser')
-
-    //   // Redirect home.
-    //   this.$router.push({ name: 'home' })
     }
   },
   mounted: function()
   {
-    jQuery('input').iCheck({
+    $('input[type=checkbox]').on('ifChecked', (e) => {
+        this.remember = true;
+    })
+    $('input[type=checkbox]').on('ifUnchecked', (e) => {
+        this.remember = false;
+    })
+    $('input').iCheck({
         checkboxClass: 'icheckbox_square-blue',
         radioClass: 'iradio_square-blue',
         increaseArea: '20%' // optional
-    });
+    })
   }
 }
 </script>
