@@ -21,8 +21,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 });
 
-Route::group(['middleware' => 'guest:api,web'], function () {
-    
+Route::group(['middleware' => 'guest:api'], function () {
+    Route::get('checkLogin', 'UserController@isLogin');
+    Route::post('login', 'UserController@login');
     Route::post('register', 'Auth\RegisterController@register');
     Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
     Route::post('password/reset', 'Auth\ResetPasswordController@reset');

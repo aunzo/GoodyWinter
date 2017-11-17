@@ -15,4 +15,3 @@ Route::any('{all}', function () {
     return view('app');
 })->where(['all' => '.*']);
 
-Route::post('login', 'Auth\LoginController@login');

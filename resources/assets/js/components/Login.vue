@@ -20,7 +20,7 @@
                     <div class="col-xs-8">
                     <div class="checkbox icheck"> 
                         <label>
-                        <input type="checkbox" v-model="remember"> จำไว้ในระบบ
+                        <input type="checkbox" v-model="form.remember"> จำไว้ในระบบ
                         </label>
                     </div>
                     </div>
@@ -44,33 +44,36 @@ export default
 {
   data: () => ({
     form: new Form({
-      email: '',
-      password: ''
+      username: '',
+      password: '',
+      remember: false 
     }),
-    remember: false 
+    
   }),
   methods: 
   {
     login () 
     {
-        this.form.post('/login').then(({ data }) => 
-        { 
-            console.log(data)
-            Laravel.isLogin = true
-            this.$router.push({ name: 'main' })
-        })
-        .catch((error) => {
-            console.log(error.message);
-        });
+        this
+            .form
+            .post('api/login')
+            .then((response) =>
+            {
+                console.log(response.data.isLoginSuccess)
+            })
+            .catch((error) => 
+            {
+                console.log(error.message);
+            });
     }
   },
   mounted: function()
   {
     $('input[type=checkbox]').on('ifChecked', (e) => {
-        this.remember = true;
+        this.form.remember = true;
     })
     $('input[type=checkbox]').on('ifUnchecked', (e) => {
-        this.remember = false;
+        this.form.remember = false;
     })
     $('input').iCheck({
         checkboxClass: 'icheckbox_square-blue',

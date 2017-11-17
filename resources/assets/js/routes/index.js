@@ -17,17 +17,23 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-      if (!Laravel.isLogin) {
-        next({
-          path: '/login',
-        });
-      } else {
-        next();
-      }
-    } else {
-      next();
-    }
-  })
+    if (to.matched.some(record => record.meta.requiresAuth)) 
+    {
+        axios
+            .get('api/checkLogin')
+            .then(function (response) 
+            {
+                if (!response.data.isLogin)
+                {
+                    next({
+                        path: '/login',
+                        });
+                }
+                else next();
+            })
+            .catch(function (error) { console.log('errpr' , error) });
+    } 
+    else next();
+  });
 
 export default router;

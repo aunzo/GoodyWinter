@@ -8,6 +8,18 @@
                         <form @submit.prevent="register" @keydown="form.onKeydown($event)">
                             <!-- Name -->
                             <div class="form-group row">
+                                <label class="col-md-3 col-form-label text-md-right">ตำแหน่งงาน</label>
+                                <div class="col-md-7">
+                                    <select class="form-control">
+                                        <option>option 1</option>
+                                        <option>option 2</option>
+                                        <option>option 3</option>
+                                        <option>option 4</option>
+                                        <option>option 5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label class="col-md-3 col-form-label text-md-right">ชื่อ-นามสกุล</label>
                                 <div class="col-md-7">
                                 <input v-model="form.username" type="text" name="username" class="form-control"
@@ -82,22 +94,13 @@ export default {
   }),
 
   methods: {
-    // async register () {
-    //   // Register the user.
-    //   const { data } = await this.form.post('/api/register')
-
-    //   // Log in the user.
-    //   const { data: { token }} = await this.form.post('/api/login')
-
-    //   // Save the token.
-    //   this.$store.dispatch('saveToken', { token })
-
-    //   // Update the user.
-    //   await this.$store.dispatch('updateUser', { user: data })
-
-    //   // Redirect home.
-    //   this.$router.push({ name: 'home' })
-    // }
+      loadRoles() {
+           
+      }
+  },
+  mouted: function()
+  {
+      console.log(App/Role)
   }
 }
 </script>
